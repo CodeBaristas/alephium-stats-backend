@@ -1,0 +1,168 @@
+[tool.poetry]
+name = "alephium_stats"
+version = "0.1.0"
+description = ""
+authors = ["Max Schneider <ms.matix@googlemail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pre-commit = "^3.3.3"
+fastapi = "^0.94.1"
+logging = "^0.4.9.6"
+debugpy = "^1.6.7"
+uvicorn = "^0.21.0"
+asyncio = "^3.4.3"
+dimfred = { git = "https://github.com/Dimfred/dimfred.git", rev = "main" }
+python-depends = { git = "https://github.com/Dimfred/depends.git", rev = "main" }
+syncpg = "^1.1.2"
+alembic = "^1.11.2"
+setuptools = "^67.6.0"
+loguru = "^0.7.0"
+httpx = "^0.24.1"
+mysqlclient = "^2.1.1"
+pytz = "^2023.3.post1"
+sqlmodel = "0.0.11"
+pytest-xdist = "^3.4.0"
+coverage = "^7.3.2"
+base-crud = { git = "https://github.com/Cojodi/base_crud.git" }
+asyncmy = "^0.2.9"
+pathlib = "^1.0.1"
+slowapi = "^0.1.8"
+fastapi-websocket-pubsub = "^0.3.8"
+celery = "^5.3.6"
+redis = "^5.0.1"
+websocket = "^0.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.2"
+pytest-asyncio = "^0.20.3"
+pytest-mock = "^3.10.0"
+pytest-alembic = "^0.10.0"
+pytest-cov = "^4.0.0"
+pytest-fastapi-deps = "^0.2.3"
+pytest-xdist = "^3.2.1"
+docker = "^6.0.1"
+pre-commit = "^3.3.3"
+aiosqlite = "^0.18.0"
+mypy = "^1.4.1"
+ruff = "^0.0.283"
+gevent = "^23.9.1"
+
+[tool.coverage.run]
+concurrency = ["gevent"]
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+# Minimum supported version
+target-version = "py39"
+line-length = 88
+show-fixes = true
+select = [
+  "F",
+  "E",
+  "W",
+  "C90",
+  "N",
+  "D",
+  "UP",
+  "ANN",
+  "S112",
+  "S110",
+  "BLE",
+  "FBT",
+  "A",
+  "C4",
+  "DTZ",
+  "EM",
+  "EXE",
+  "INP",
+  "PIE",
+  "PYI",
+  "Q",
+  "RSE",
+  "RET",
+  "SIM",
+  "TID",
+  "INT",
+  "ARG",
+  "ERA",
+  "PL",
+  "RUF",
+  "B",
+  "I001",
+  "I002",
+]
+ignore = [
+  "ARG001", # arg is not accessed
+  "A003",   # class attr shadowing python builtin
+  "ANN001", # missing function arg annotation
+  "ANN002", # missing *args annotation
+  "ANN003", # missing **kwargs annotation
+  "ANN101", # missing type for self in __init__
+  "ANN201", # public function return type missing
+  "ANN202", # private function timereturn type missing (inner function)
+  "ANN204", # special function return type missing
+  "B008",   # no function calls in function params (need this for DDepends)
+  "EXE002", # no shbang present
+  "D100",   # missing docstring in module
+  "D101",   # missing docstring in class
+  "D102",   # missing docstring in class method
+  "D103",   # missing docstring in function
+  "D104",   # missing docstring in public package
+  "D107",   # missing docstring in __init__
+  "E501",   # line too long (shouldn't matter with formatter)
+  "TID252", # relative imports from parent modules are banned
+  "UP007",  # used X | Y for unions
+  # "UP007",
+  # "UP037"
+  "PLR0913", # don't use more than 5 args per function
+]
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Errors which can be fixed
+fixable = [
+  "I001", # isort unsorted imports
+  "I002", # isort missing imports
+]
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+# fixable = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+unfixable = []
+
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".git-rewrite",
+
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "venv",
+]
+
+[tool.ruff.mccabe]
+max-complexity = 15
+
+[tool.mypy]
+ignore_missing_imports = true

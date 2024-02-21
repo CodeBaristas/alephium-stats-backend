@@ -1,0 +1,70 @@
+shell: zsh
+commands:
+  client:
+    description: generate openapi client
+    cmd: |
+      ./scripts/generate_client.sh
+  run:
+    description: run <backend/worker/beat>
+    cmd: |
+      PACKAGE=alephium_stats
+      if [ -z "$APP_CONFIG" ]; then
+        export APP_CONFIG="dev"
+      fi
+      export APP_NAME="${PACKAGE}-${APP_CONFIG}"
+
+      cmd=$1
+      case "$cmd" in
+        worker)
+          celery --app=$PACKAGE.run_worker.celery $cmd -l error -c 4;;
+        beat)
+          celery --app=$PACKAGE.run_worker.celery $cmd -l error;;
+        backend)
+          python3 -m "$PACKAGE.run_$cmd";;
+        *)
+          echo "usage: <backend/worker/beat>";;
+      esac
+  # NOTE:actual no db necessary
+  # db:
+  #   description: db
+  #   cmd: |
+  #     if [ -z "$APP_CONFIG" ]; then
+  #       export APP_CONFIG="migration"
+  #     fi
+  #     export APP_NAME="alephium_stats-${APP_CONFIG}"
+  #
+  #     cmd=$1
+  #     case "$cmd" in
+  #       start)
+  #         docker pull mariadb:10.9
+  #         docker run -d -p 3306:3306 --rm -e MYSQL_ROOT_PASSWORD=root --name mariadb mariadb:10.9
+  #         ;;
+  #       stop) docker stop mariadb;;
+  #       upgrade) alembic upgrade head;;
+  #       downgrade) alembic downgrade -1;;
+  #       revision)
+  #         if [ -z "$msg" ]; then
+  #           echo "required: msg=<commit msg for db here>"
+  #           return
+  #         fi
+  #
+  #         alembic revision --autogenerate -m "$msg"
+  #         ;;
+  #       *) echo "usage: db <start/stop/upgrade/downgrade/revision>";;
+  #     esac
+  test:
+    description: run the tests
+    cmd: |
+      python3 -m pytest -s -p no:pytest-brownie
+  cov:
+    description: run coverage
+    cmd: |
+      python3 -m pytest -s tests -n auto -p no:pytest-brownie \
+        --cov-report term-missing:skip-covered \
+        --cov-config pytest.ini \
+        --cov=. tests/ \
+        -vv
+  env:
+    description: enable venv
+    cmd: |-
+      python3.11 -m poetry shell

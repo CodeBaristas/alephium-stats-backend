@@ -1,0 +1,61 @@
+version: '3.8'
+# NOTE:actual no db necessary
+# volumes:
+#   db-data:
+services:
+  api:
+    build: .
+    image: alephium-stats-backend:v1.6
+    ports:
+      - "8000:8000"
+    env_file:
+      - config_prod.env
+    environment:
+      APP_PART: "backend"
+    # NOTE:actual no db necessary
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
+    volumes:
+      - .:/alephium_stats
+      # - ./data:/alephium_stats/data
+  worker:
+    image: alephium-stats-backend:v1.6
+    env_file:
+      - config_prod.env
+    environment:
+      APP_PART: "worker"
+    depends_on:
+      - api
+      - redis
+  beat:
+    image: alephium-stats-backend:v1.6
+    env_file:
+      - config_prod.env
+    environment:
+      APP_PART: "beat"
+    depends_on:
+      - api
+      - redis
+  ################################################################################
+  # INDEPENDENT
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6378:6379"
+    hostname: "alephium_stats-prod-redis"
+
+# NOTE:actual no db necessary
+# db:
+#   image: mariadb:10.9
+#   ports:
+#     - "3306:3306"
+#   env_file:
+#     - config_prod.env
+#   volumes:
+#     - db-data:/var/lib/mysql
+#   healthcheck:
+#     test: "mysql $$MYSQL_DATABASE -u$$MYSQL_USER -p$$MYSQL_ROOT_PASSWORD -e 'SELECT 1;'"
+#     interval: 5s
+#     timeout: 3s
+#     retries: 10

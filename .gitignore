@@ -1,0 +1,54 @@
+# GENERAL
+**/build/*
+
+# FOLDER
+config_dev.env
+config_prod.env
+.venv
+
+# EDITOR
+.vscode
+.VSCodeCounter
+.idea
+.nvim
+
+# PYTHON
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/.pytest_cache
+.hypothesis
+**/try.py
+**/celerybeat-schedule
+dist
+.venv
+.coverage
+
+# NODE JS TS
+**/node_modules/**
+
+# CPP
+**/.ccls-cache
+doxygen
+compile-commands.json
+CMakeCache.txt
+CMakeFiles
+
+# SOLIDITY
+**/cache
+**/artifacts
+**/*coverage*
+**/@openzeppelin/*
+**/gasReporterOutput.json
+
+# DB
+**/*.db
+
+# SUBMODULES
+data/openapi.json
+openapitools.json
+package-lock.json
+package.json
+
+# LOG
+app.log
