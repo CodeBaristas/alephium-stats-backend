@@ -22,6 +22,7 @@ class Config(BaseConfig):
     ALEPHIUM_EXPLORER_URL: str = "https://explorer.fresenius.ai"
     ALEPHIUM_EXPLORER_TRIGGER_ROUTE: str
     ALEPHIUM_EXPLORER_REFRESH_SECONDS: int = 1
+    ALEPHIUM_EXPLORER_BLOCK_SEND_RATE_SECONDS: float = 0.5
     ALEPHIUM_EXPLORER_MAX_REQUEST_BLOCKS: int = 10
 
     ############################################################################
