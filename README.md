@@ -2,7 +2,7 @@
 
 ## Overview
 
-This backend service is designed to support the Alephium blockchain network by performing two primary tasks: delivering data for a statistics frontend and providing real-time updates on new blocks through a WebSocket for the visualizer. This service leverages the power of Python, Celery, and WebSocket technologies to offer a seamless and efficient data flow for Alephium network visualizations and analytics.
+This backend service is designed to support the Alephium blockchain network by performing two primary tasks: delivering data for a statistics frontend and providing real-time updates on new blocks through a WebSocket for the visualizer. This service leverages the power of Python, Celery, Redis and WebSocket technologies to offer a seamless and efficient data flow for Alephium network visualizations and analytics. Furthermore, within the extensive repository, detailed notes are available to facilitate the effortless integration of the database into our system architecture. Our upcoming development roadmap includes the implementation of a robust database system designed to securely store aggregated statistical data. The infrastructure is already poised to seamlessly support this feature upon deployment.
 
 ## Development
 

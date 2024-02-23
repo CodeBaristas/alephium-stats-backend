@@ -8,6 +8,10 @@ from ..config import config
 from ..run_worker import celery
 
 # from ..utils.utils import logger
+# FIX:/OUTLOOK
+# To address the issue of non-chronological data transmission from the explorer, it's imperative to implement a buffer for each of the 16 chains.
+# These buffers will serve to temporarily store the incoming blocks and subsequently sort them based on their height. Maybe, the explorer itself can
+# be enhanced to ensure that data is sent chronologically.
 
 loop = aio.get_event_loop()
 
@@ -19,11 +23,20 @@ def setup_periodic_tasks(sender, **_):  # pragma: no cover
         config.ALEPHIUM_EXPLORER_REFRESH_SECONDS,
         check_new_node_data.s(),
     )
+    sender.add_periodic_task(
+        config.ALEPHIUM_EXPLORER_BLOCK_SEND_RATE_SECONDS,
+        send_block.s(),
+    )
 
 
 @celery.task
 def check_new_node_data():  # pragma: no cover
     loop.run_until_complete(_check_new_node_data())
+
+
+@celery.task
+def send_block():  # pragma: no cover
+    loop.run_until_complete(_send_block())
 
 
 async def _check_new_node_data():
@@ -54,9 +67,17 @@ async def _check_new_node_data():
             await redis.set("hash", json.dumps(old_hashes))
 
             new_blocks = [
-                block for block in response_blocks if block["hash"] in new_hashes
+                json.dumps(block)
+                for block in response_blocks
+                if block["hash"] in new_hashes
             ]
-            [
-                await requests.post(config.ALEPHIUM_EXPLORER_TRIGGER_ROUTE, json=block)
-                for block in new_blocks
-            ]
+            await redis.rpush("list_blocks", *new_blocks)
+
+
+async def _send_block():
+    block_to_send = await redis.lpop("list_blocks")
+    async with AsyncClient() as requests:
+        if block_to_send:
+            await requests.post(
+                config.ALEPHIUM_EXPLORER_TRIGGER_ROUTE, json=json.loads(block_to_send)
+            )

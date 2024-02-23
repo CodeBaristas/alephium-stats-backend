@@ -10,6 +10,7 @@ async def on_trigger(**kwargs):
 
 async def subscribe_to_trigger():
     async with PubSubClient(server_uri="ws://localhost:8000/streams/blocks") as client:
+        # NOTE: note necessary anymore due to adaption of pubsublib
         client.subscribe("block_data", on_trigger)
         await asyncio.Event().wait()
 

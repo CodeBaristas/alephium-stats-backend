@@ -74,7 +74,7 @@ def exception(e):  # pragma: no cover
 
 
 setattr(logger, "exception", exception)
-# TODO maybe later pretty printing pydantic objs
+# TODO: maybe later pretty printing pydantic objs
 # setattr(logger, "pinfo", lambda o: logger.info(Pretty(o)))
 
 
