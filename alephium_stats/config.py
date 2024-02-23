@@ -22,7 +22,7 @@ class Config(BaseConfig):
     ALEPHIUM_EXPLORER_URL: str = "https://explorer.fresenius.ai"
     ALEPHIUM_EXPLORER_TRIGGER_ROUTE: str
     ALEPHIUM_EXPLORER_REFRESH_SECONDS: int = 1
-    ALEPHIUM_EXPLORER_BLOCK_SEND_RATE_SECONDS: float = 0.5
+    ALEPHIUM_EXPLORER_BLOCK_SEND_RATE_SECONDS: int = 1
     ALEPHIUM_EXPLORER_MAX_REQUEST_BLOCKS: int = 10
 
     ############################################################################
@@ -33,7 +33,7 @@ class Config(BaseConfig):
     # APP
     APP_DEBUG: bool = False
     APP_WORKER: int = 1
-    APP_LOG_LEVEL: str = "INFO"
+    APP_LOG_LEVEL: str = "ERROR"
     APP_LOGGING_IGNORE: List[str] = [
         "aiosqlite",
         "asyncio",
