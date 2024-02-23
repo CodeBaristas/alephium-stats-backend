@@ -8,6 +8,10 @@ from ..config import config
 from ..run_worker import celery
 
 # from ..utils.utils import logger
+# FIX:/OUTLOOK
+# To address the issue of non-chronological data transmission from the explorer, it's imperative to implement a buffer for each of the 16 chains.
+# These buffers will serve to temporarily store the incoming blocks and subsequently sort them based on their height. Maybe, the explorer itself can
+# be enhanced to ensure that data is sent chronologically.
 
 loop = aio.get_event_loop()
 
